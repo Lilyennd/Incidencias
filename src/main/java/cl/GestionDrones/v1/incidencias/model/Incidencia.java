@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "incidencias")
-public class Incidencias {
+public class Incidencia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,10 +40,10 @@ public class Incidencias {
     @Column(name = "ubicacion_referencial", nullable = false)
     private String ubicacionReferencial; 
 
-    public Incidencias() {
+    public Incidencia() {
     }
 
-    public Incidencias(Long id, Long idPlanVuelo, String origenReporte, String tipoIncidencia, String descripcion, LocalDateTime fechaHoraReporte, String ubicacionReferencial) {
+    public Incidencia(Long id, Long idPlanVuelo, String origenReporte, String tipoIncidencia, String descripcion, LocalDateTime fechaHoraReporte, String ubicacionReferencial) {
         this.id = id;
         this.idPlanVuelo = idPlanVuelo;
         this.origenReporte = origenReporte;
