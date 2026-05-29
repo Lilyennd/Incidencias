@@ -26,7 +26,7 @@ public class IncidenciaController {
 
         private final IncidenciaService incidenciaService;
 
-        // Inyección por constructor limpia y moderna
+        
         public IncidenciaController(IncidenciaService incidenciaService) {
                 this.incidenciaService = incidenciaService;
         }
@@ -35,7 +35,7 @@ public class IncidenciaController {
         public ResponseEntity<List<Incidencia>> listarIncidencias() {
                 List<Incidencia> incidencias = incidenciaService.getIncidencias();
                 
-                // IF: Si no hay incidencias registradas en el mapa nacional de la DGAC
+                
                 if (incidencias.isEmpty()) {
                         return ResponseEntity.noContent().build();
                 }
@@ -45,7 +45,7 @@ public class IncidenciaController {
 
         @PostMapping
         public ResponseEntity<Incidencia> agregarIncidencia(@Valid @RequestBody CreateIncidenciaRequest request) {
-                // IF: Validación manual de negocio. Si el plan de vuelo viene informado, no puede ser un ID absurdo
+                
                 if (request.idPlanVuelo() != null && request.idPlanVuelo() <= 0) {
                         throw new PlanVueloInvalidoException(request.idPlanVuelo(), "El ID del Plan de Vuelo asociado debe ser un identificador numérico válido.");
                 }
@@ -63,7 +63,7 @@ public class IncidenciaController {
         public ResponseEntity<Incidencia> buscarIncidencia(@PathVariable Long id) {
                 Incidencia incidencia = incidenciaService.getIncidenciaId(id);
                 
-                // IF: Si no se encuentra la incidencia fiscalizada por ID
+                
                 if (incidencia == null) {
                         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
                 }
@@ -75,7 +75,7 @@ public class IncidenciaController {
         public ResponseEntity<Incidencia> actualizarIncidencia(@PathVariable Long id,
                         @Valid @RequestBody UpdateIncidenciaRequest request) {
                 
-                // IF: Validación de integridad en la actualización del Plan de Vuelo
+                
                 if (request.idPlanVuelo() != null && request.idPlanVuelo() <= 0) {
                         throw new PlanVueloInvalidoException(request.idPlanVuelo(), "El ID del Plan de Vuelo modificado no es válido.");
                 }
@@ -91,7 +91,7 @@ public class IncidenciaController {
 
         @DeleteMapping("/{id}")
         public ResponseEntity<Void> eliminarIncidencia(@PathVariable Long id) {
-                // IF: Validación del ID numérico wrapper de la BD antes de proceder
+                
                 if (id == null || id <= 0) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
                 }
@@ -104,7 +104,7 @@ public class IncidenciaController {
         public ResponseEntity<Integer> totalIncidencias() {
                 int total = incidenciaService.totalIncidenciasV2();
                 
-                // IF: Si el conteo arroja un error aritmético o de sincronización en BD
+                
                 if (total < 0) {
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
                 }
@@ -114,14 +114,14 @@ public class IncidenciaController {
 
         @GetMapping("/plan-vuelo/{idPlanVuelo}")
         public ResponseEntity<List<Incidencia>> selectPorPlanVuelo(@PathVariable Long idPlanVuelo) {
-                // IF: Validación del parámetro de la URL
+                
                 if (idPlanVuelo == null || idPlanVuelo <= 0) {
                         throw new PlanVueloInvalidoException(idPlanVuelo, "El ID de plan de vuelo consultado en la URL es inválido.");
                 }
 
                 List<Incidencia> incidencias = incidenciaService.obtenerPorPlanVuelo(idPlanVuelo);
                 
-                // IF: Si no se encontraron reportes ciudadanos o de mandantes asociados a ese plan
+                
                 if (incidencias.isEmpty()) {
                         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(incidencias);
                 }

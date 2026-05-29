@@ -5,15 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-/**
- * DTO para registrar una nueva incidencia (POST).
- * No incluye ID porque se genera automáticamente en la base de datos.
- * El idPlanVuelo es opcional (nullable) para soportar reportes de drones no identificados.
- */
+
 public record CreateIncidenciaRequest(
         
-        // No se usa @NotNull ni @NotBlank porque el caso de la DGAC explica 
-        // que un ciudadano o empresa puede reportar un dron no identificado sin conocer el plan.
+        
         Long idPlanVuelo,
 
         @NotBlank(message = "El origen del reporte es obligatorio (Ej: Piloto, Empresa Mandante, Ciudadano)")

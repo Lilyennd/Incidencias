@@ -5,14 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-/**
- * DTO para actualizar una incidencia existente (PUT).
- * No incluye ID porque se obtiene del path parameter en la URL del endpoint.
- * Mantiene la flexibilidad de 'idPlanVuelo' para casos reportados por ciudadanos.
- */
+
 public record UpdateIncidenciaRequest(
 
-        // Se mantiene opcional por si la incidencia original no tenía un plan de vuelo asociado
+        
         Long idPlanVuelo,
 
         @NotBlank(message = "El origen del reporte es obligatorio (Ej: Piloto, Empresa Mandante, Ciudadano)")

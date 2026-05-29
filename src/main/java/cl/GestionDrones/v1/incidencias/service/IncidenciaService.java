@@ -28,7 +28,7 @@ public class IncidenciaService {
     }
 
     public Incidencia updateIncidencia(Incidencia incidencia) {
-        // Primero verificamos si existe para asegurar que es un PUT válido
+        
         if (!incidenciaRepository.existsById(incidencia.getId())) {
             throw new ResourceNotFoundException("No se puede actualizar: La incidencia con ID " + incidencia.getId() + " no existe.");
         }
@@ -43,27 +43,21 @@ public class IncidenciaService {
         return "Incidencia eliminada";
     }
 
-    // LA ACCIÓN LA HACE EL SERVICE (Conteo directo mediante JPA standard)
+    
     public int totalIncidencias() {
         return (int) incidenciaRepository.count();
     }
 
-    // LA ACCIÓN LA HACE EL REPOSITORIO (Llamando a una query personalizada nativa/JPQL si existiera)
+    
     public int totalIncidenciasV2() {
         return incidenciaRepository.totalIncidencias();
     }
 
-    /**
-     * Métodos de búsqueda personalizados para la DGAC.
-     * Permite buscar incidencias vinculadas a un plan de vuelo específico.
-     * Si no se encuentra ninguna registrada, gatilla la excepción controlada por el GlobalExceptionHandler.
-     */
+    
     public List<Incidencia> obtenerPorPlanVuelo(Long idPlanVuelo) {
-        // 1. Buscas en la base de datos a través del repositorio (simulación estructural)
-        // List<Incidencias> listaResultados = incidenciaRepository.findByIdPlanVuelo(idPlanVuelo);
-        List<Incidencia> listaResultados = java.util.Collections.emptyList(); // Simulación vacía para testeo de excepciones
+        
+        List<Incidencia> listaResultados = java.util.Collections.emptyList();
 
-        // 2. Si no hay registros asociados a ese plan de vuelo, lanzas la excepción de negocio
         if (listaResultados.isEmpty()) {
             throw new PlanVueloInvalidoException(idPlanVuelo);
         }

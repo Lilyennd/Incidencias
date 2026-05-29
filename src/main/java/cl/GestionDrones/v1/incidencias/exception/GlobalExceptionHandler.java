@@ -11,10 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/**
- * GlobalExceptionHandler modernizado con Problem Details API (RFC 7807)
- * Personalizado para el módulo de Gestión de Incidencias - DGAC (2026)
- */
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -22,9 +19,7 @@ public class GlobalExceptionHandler {
         System.out.println("✅ GlobalExceptionHandler DE INCIDENCIAS SE HA REGISTRADO CORRECTAMENTE");
     }
 
-    /**
-     * Maneja errores de validación Jakarta con Problem Details (Ej: campos obligatorios vacíos, descripciones muy largas)
-     */
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidationErrors(MethodArgumentNotValidException ex) {
         System.out.println("🔴 GlobalExceptionHandler [Incidencias] - Errores de validación detectados");
@@ -37,7 +32,7 @@ public class GlobalExceptionHandler {
         problem.setTitle("Validation Error - Incidencia");
         problem.setProperty("timestamp", Instant.now());
 
-        // Extraer errores con streams
+        
         Map<String, String> errors = ex.getBindingResult().getFieldErrors().stream()
                 .collect(Collectors.toMap(
                         FieldError::getField,
@@ -50,9 +45,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
-    /**
-     * Maneja errores de parseo de JSON (Ej: Estructura mal armada al reportar la incidencia o fechas mal formateadas)
-     */
+    
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail handleJsonParseError(HttpMessageNotReadableException ex) {
         System.out.println("🟡 Error de parseo JSON en módulo Incidencias");
@@ -69,9 +62,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
-    /**
-     * Maneja casos donde una Incidencia buscada por ID no existe en la base de datos de la DGAC
-     */
+    
     @ExceptionHandler(ResourceNotFoundException.class)
     public ProblemDetail handleResourceNotFound(ResourceNotFoundException ex) {
         System.out.println("🟡 Incidencia o recurso no encontrado");
@@ -86,9 +77,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
-    /**
-     * Maneja errores internos y caídas generales del servidor dentro del módulo de incidencias
-     */
+    
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneralException(Exception ex) {
         System.out.println("🔴 EXCEPCIÓN CAPTURADA EN INCIDENCIAS: " + ex.getClass().getName());
@@ -107,10 +96,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
-    /**
-     * Reemplazo estratégico de 'RutInvalidoException':
-     * Maneja casos donde se intenta asociar un Plan de Vuelo inexistente a la incidencia.
-     */
+    
     @ExceptionHandler(PlanVueloInvalidoException.class)
     public ProblemDetail handlePlanVueloInvalido(PlanVueloInvalidoException ex) {
         System.out.println("🟡 GlobalExceptionHandler [Incidencias] - Problema detectado con el Plan de Vuelo: " + ex.getIdPlanVuelo());
