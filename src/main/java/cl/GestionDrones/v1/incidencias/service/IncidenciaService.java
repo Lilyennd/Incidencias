@@ -55,13 +55,6 @@ public class IncidenciaService {
 
     
     public List<Incidencia> obtenerPorPlanVuelo(Long idPlanVuelo) {
-        
-        List<Incidencia> listaResultados = java.util.Collections.emptyList();
-
-        if (listaResultados.isEmpty()) {
-            throw new PlanVueloInvalidoException(idPlanVuelo);
-        }
-
-        return listaResultados;
+    return incidenciaRepository.selectPorIdPlanVuelo(idPlanVuelo);
     }
 }

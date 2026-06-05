@@ -113,19 +113,18 @@ public class IncidenciaController {
         }
 
         @GetMapping("/plan-vuelo/{idPlanVuelo}")
-        public ResponseEntity<List<Incidencia>> selectPorPlanVuelo(@PathVariable Long idPlanVuelo) {
-                
-                if (idPlanVuelo == null || idPlanVuelo <= 0) {
-                        throw new PlanVueloInvalidoException(idPlanVuelo, "El ID de plan de vuelo consultado en la URL es inválido.");
-                }
+        public ResponseEntity<List<Incidencia>> selectPorIdPlanVuelo(@PathVariable Long idPlanVuelo) {
+        if (idPlanVuelo == null || idPlanVuelo <= 0) {
+                throw new PlanVueloInvalidoException(idPlanVuelo, "El ID de plan de vuelo consultado en la URL es inválido.");
+        }
 
-                List<Incidencia> incidencias = incidenciaService.obtenerPorPlanVuelo(idPlanVuelo);
-                
-                
-                if (incidencias.isEmpty()) {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(incidencias);
-                }
-                
-                return ResponseEntity.ok(incidencias);
+        List<Incidencia> incidencias = incidenciaService.obtenerPorPlanVuelo(idPlanVuelo);
+        
+        if (incidencias == null || incidencias.isEmpty()) {
+                // Devuelve 204 No Content si está vacío, es estándar REST para "no hay datos"
+                return ResponseEntity.noContent().build();
+        }
+        
+        return ResponseEntity.ok(incidencias);
         }
 }
