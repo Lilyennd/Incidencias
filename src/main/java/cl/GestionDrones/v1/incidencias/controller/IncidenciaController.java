@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cl.GestionDrones.v1.incidencias.dto.CreateIncidenciaRequest;
 import cl.GestionDrones.v1.incidencias.dto.UpdateIncidenciaRequest;
-import cl.GestionDrones.v1.incidencias.mapper.IncidenciaMapper;
 import cl.GestionDrones.v1.incidencias.model.Incidencia;
 import cl.GestionDrones.v1.incidencias.service.IncidenciaService;
 import cl.GestionDrones.v1.incidencias.exception.PlanVueloInvalidoException;
@@ -50,7 +49,7 @@ public class IncidenciaController {
                         throw new PlanVueloInvalidoException(request.idPlanVuelo(), "El ID del Plan de Vuelo asociado debe ser un identificador numérico válido.");
                 }
 
-                Incidencia nuevaIncidencia = incidenciaService.saveIncidencia(IncidenciaMapper.toModel(request));
+              Incidencia nuevaIncidencia = incidenciaService.saveIncidencia(request);
                 
                 if (nuevaIncidencia == null) {
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -79,9 +78,7 @@ public class IncidenciaController {
                 if (request.idPlanVuelo() != null && request.idPlanVuelo() <= 0) {
                         throw new PlanVueloInvalidoException(request.idPlanVuelo(), "El ID del Plan de Vuelo modificado no es válido.");
                 }
-
-                Incidencia incidenciaActualizada = incidenciaService.updateIncidencia(IncidenciaMapper.toModel(id, request));
-                
+                Incidencia incidenciaActualizada = incidenciaService.updateIncidencia(id, request);
                 if (incidenciaActualizada == null) {
                         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
                 }
@@ -102,7 +99,7 @@ public class IncidenciaController {
 
         @GetMapping("/total")
         public ResponseEntity<Integer> totalIncidencias() {
-                int total = incidenciaService.totalIncidenciasV2();
+                int total = incidenciaService.totalIncidencias();
                 
                 
                 if (total < 0) {
