@@ -25,7 +25,6 @@ public class IncidenciaController {
 
         private final IncidenciaService incidenciaService;
 
-        
         public IncidenciaController(IncidenciaService incidenciaService) {
                 this.incidenciaService = incidenciaService;
         }
