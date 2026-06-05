@@ -123,4 +123,19 @@ public class IncidenciaController {
         
         return ResponseEntity.ok(incidencias);
         }
+
+        @GetMapping("/origen/{origenReporte}")
+        public ResponseEntity<List<Incidencia>> buscarPorOrigen(@PathVariable String origenReporte) {
+        if (origenReporte == null || origenReporte.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        List<Incidencia> incidencias = incidenciaService.obtenerPorOrigen(origenReporte);
+
+        if (incidencias.isEmpty()) {
+                return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(incidencias);
+        }
 }

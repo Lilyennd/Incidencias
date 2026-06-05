@@ -72,4 +72,8 @@ public class IncidenciaService {
         return resultados;
     }
 
+    public List<Incidencia> obtenerPorOrigen(String origenReporte) {
+    return incidenciaRepository.selectPorOrigenReporte(origenReporte);
+}
+
 }
