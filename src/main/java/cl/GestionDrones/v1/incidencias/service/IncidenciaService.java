@@ -60,6 +60,16 @@ public class IncidenciaService {
 
     
     public List<Incidencia> obtenerPorPlanVuelo(Long idPlanVuelo) {
-    return incidenciaRepository.selectPorIdPlanVuelo(idPlanVuelo);
+        planesDeVuelosClient.verificarPlanExiste(idPlanVuelo);
+
+        List<Incidencia> resultados = incidenciaRepository.selectPorIdPlanVuelo(idPlanVuelo);
+
+        if (resultados.isEmpty()) {
+            throw new ResourceNotFoundException(
+                "No hay incidencias registradas para el plan de vuelo con ID: " + idPlanVuelo);
+        }
+
+        return resultados;
     }
+
 }
