@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
         System.out.println("✅ GlobalExceptionHandler DE INCIDENCIAS SE HA REGISTRADO CORRECTAMENTE");
     }
 
-
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidationErrors(MethodArgumentNotValidException ex) {
         System.out.println("🔴 GlobalExceptionHandler [Incidencias] - Errores de validación detectados");
@@ -32,6 +32,7 @@ public class GlobalExceptionHandler {
         problem.setTitle("Validation Error - Incidencia");
         problem.setProperty("timestamp", Instant.now());
 
+        
         Map<String, String> errors = ex.getBindingResult().getFieldErrors().stream()
                 .collect(Collectors.toMap(
                         FieldError::getField,
@@ -44,7 +45,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
-
+    
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail handleJsonParseError(HttpMessageNotReadableException ex) {
         System.out.println("🟡 Error de parseo JSON en módulo Incidencias");
@@ -61,7 +62,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
-
+    
     @ExceptionHandler(ResourceNotFoundException.class)
     public ProblemDetail handleResourceNotFound(ResourceNotFoundException ex) {
         System.out.println("🟡 Incidencia o recurso no encontrado");
@@ -76,7 +77,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
-
+    
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneralException(Exception ex) {
         System.out.println("🔴 EXCEPCIÓN CAPTURADA EN INCIDENCIAS: " + ex.getClass().getName());
@@ -95,7 +96,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
-
+    
     @ExceptionHandler(PlanVueloInvalidoException.class)
     public ProblemDetail handlePlanVueloInvalido(PlanVueloInvalidoException ex) {
         System.out.println("🟡 GlobalExceptionHandler [Incidencias] - Problema detectado con el Plan de Vuelo: " + ex.getIdPlanVuelo());

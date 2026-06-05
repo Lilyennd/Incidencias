@@ -17,15 +17,12 @@ public class Incidencia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(name = "id_plan_vuelo", nullable = true)
     private Long idPlanVuelo;
-
 
     @Column(name = "origen_reporte", nullable = false)
     private String origenReporte;
 
-    // Ej: "Vuelo no autorizado", "Dron no identificado", "Incidente en vuelo"
     @Column(name = "tipo_incidencia", nullable = false)
     private String tipoIncidencia; 
 
@@ -35,7 +32,6 @@ public class Incidencia {
     @Column(name = "fecha_hora_reporte", nullable = false)
     private LocalDateTime fechaHoraReporte;
 
-    // Crucial para que el inspector de la DGAC sepa dónde fue el vuelo no autorizado
     @Column(name = "ubicacion_referencial", nullable = false)
     private String ubicacionReferencial; 
 
