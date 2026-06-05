@@ -26,7 +26,6 @@ public class IncidenciaController {
 
         private final IncidenciaService incidenciaService;
 
-        // Inyección por constructor limpia y moderna
         public IncidenciaController(IncidenciaService incidenciaService) {
                 this.incidenciaService = incidenciaService;
         }
@@ -35,7 +34,7 @@ public class IncidenciaController {
         public ResponseEntity<List<Incidencia>> listarIncidencias() {
                 List<Incidencia> incidencias = incidenciaService.getIncidencias();
                 
-                // IF: Si no hay incidencias registradas en el mapa nacional de la DGAC
+                
                 if (incidencias.isEmpty()) {
                         return ResponseEntity.noContent().build();
                 }

@@ -17,12 +17,11 @@ public class Incidencia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Ahora es NULLABLE (puede estar vacío), porque un vecino o empresa mandante 
-    // no conocerá el ID del plan si es un dron no identificado.
+
     @Column(name = "id_plan_vuelo", nullable = true)
     private Long idPlanVuelo;
 
-    // Quién reporta: "Piloto", "Empresa Mandante", "Ciudadano"
+
     @Column(name = "origen_reporte", nullable = false)
     private String origenReporte;
 
