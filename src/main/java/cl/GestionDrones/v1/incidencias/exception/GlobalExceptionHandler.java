@@ -1,10 +1,13 @@
 package cl.GestionDrones.v1.incidencias.exception;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -98,18 +101,15 @@ public class GlobalExceptionHandler {
 
     
     @ExceptionHandler(PlanVueloInvalidoException.class)
-    public ProblemDetail handlePlanVueloInvalido(PlanVueloInvalidoException ex) {
-        System.out.println("🟡 GlobalExceptionHandler [Incidencias] - Problema detectado con el Plan de Vuelo: " + ex.getIdPlanVuelo());
+    public ResponseEntity<Map<String, Object>> handlePlanVueloInvalido(
+        PlanVueloInvalidoException ex) {
 
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.NOT_FOUND, // 404 porque el plan de vuelo indicado no se encuentra en el sistema
-                ex.getMessage()
-        );
+    Map<String, Object> error = new HashMap<>();
+    error.put("status", 404);
+    error.put("error", "Plan de vuelo no encontrado");
+    error.put("mensaje", ex.getMessage());
+    error.put("timestamp", LocalDateTime.now());
 
-        problem.setTitle("Plan de Vuelo Inválido u No Encontrado");
-        problem.setProperty("timestamp", Instant.now());
-        problem.setProperty("idPlanVueloIngresado", ex.getIdPlanVuelo()); // Muestra qué ID causó el conflicto
-        
-        return problem;
+    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }
