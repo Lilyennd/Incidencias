@@ -1,5 +1,4 @@
 package cl.GestionDrones.v1.incidencias.controller;
-
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +19,7 @@ import cl.GestionDrones.v1.incidencias.exception.PlanVueloInvalidoException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -55,6 +55,18 @@ public class IncidenciaController {
         }
 
         @Operation(summary = "Agregar una nueva incidencia", description = "Registra una nueva incidencia validando el ID de plan de vuelo")
+        @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Estructura JSON de la nueva incidencia a reportar",
+            required = true,
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = CreateIncidenciaRequest.class),
+                examples = @ExampleObject(
+                    name = "Ejemplo de Nueva Incidencia",
+                    value = "{\n  \"idPlanVuelo\": 101,\n  \"origenReporte\": \"PILOTO\",\n  \"tipoIncidencia\": \"FALLA_MECANICA\",\n  \"descripcion\": \"Pérdida de potencia en el motor secundario izquierdo durante el descenso.\",\n  \"fechaHoraReporte\": \"2026-06-22T14:45:00\",\n  \"ubicacionReferencial\": \"Sector Lo Campino, Quilicura\"\n}"
+                )
+            )
+        )
         @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Incidencia registrada de manera exitosa", 
                          content = @Content(mediaType = "application/json", schema = @Schema(implementation = Incidencia.class))),
@@ -63,7 +75,6 @@ public class IncidenciaController {
         })
         @PostMapping
         public ResponseEntity<Incidencia> agregarIncidencia(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Estructura JSON de la nueva incidencia a reportar", required = true)
             @Valid @RequestBody CreateIncidenciaRequest request
         ) {
                 
@@ -101,6 +112,18 @@ public class IncidenciaController {
         }
 
         @Operation(summary = "Actualizar incidencia", description = "Modifica los datos de una incidencia existente de acuerdo con su ID")
+        @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Estructura JSON con los nuevos datos de la incidencia",
+            required = true,
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = UpdateIncidenciaRequest.class),
+                examples = @ExampleObject(
+                    name = "Ejemplo de Actualización de Incidencia",
+                    value = "{\n  \"idPlanVuelo\": 101,\n  \"origenReporte\": \"SISTEMA_MONITOREO\",\n  \"tipoIncidencia\": \"FALLA_MECANICA\",\n  \"descripcion\": \"Falla confirmada de motor; dron aterrizó de emergencia sin daños a terceros.\",\n  \"fechaHoraReporte\": \"2026-06-22T15:00:00\",\n  \"ubicacionReferencial\": \"Coordenadas UTM Lat: -33.45, Lon: -70.66\"\n}"
+                )
+            )
+        )
         @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Incidencia actualizada correctamente", 
                          content = @Content(mediaType = "application/json", schema = @Schema(implementation = Incidencia.class))),
@@ -111,7 +134,6 @@ public class IncidenciaController {
         public ResponseEntity<Incidencia> actualizarIncidencia(
             @Parameter(description = "ID de la incidencia que se desea actualizar", required = true, example = "1")
             @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Estructura JSON con los nuevos datos de la incidencia", required = true)
             @Valid @RequestBody UpdateIncidenciaRequest request
         ) {
                 
